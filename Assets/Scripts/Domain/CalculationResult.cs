@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace Calculator.Domain
+﻿namespace Calculator.Domain
 {
     public class CalculationResult
     {

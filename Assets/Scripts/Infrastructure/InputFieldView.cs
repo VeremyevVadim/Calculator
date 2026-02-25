@@ -1,34 +1,29 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Calculator.Infrastructure
 {
     public class InputFieldView : MonoBehaviour
     {
         [SerializeField]
-        private Image _bottomLine;
-
-        [SerializeField]
         private TMP_InputField _inputField;
 
         public event Action<string> ValueChanged;
 
         public string Text => _inputField.text;
-
-        private void Start()
+            
+        private void Awake()
         {
-            _inputField.onSelect.AddListener(OnInputFieldSelect);
-            _inputField.onDeselect.AddListener(OnInputFieldDeselect);
             _inputField.onValueChanged.AddListener(OnInputFieldValueChanged);
+            _inputField.onValueChanged.AddListener(ClearInput);
         }
 
         private void OnDestroy()
         {
-            _inputField.onSelect.RemoveListener(OnInputFieldSelect);
-            _inputField.onDeselect.RemoveListener(OnInputFieldDeselect);
             _inputField.onValueChanged.RemoveListener(OnInputFieldValueChanged);
+            _inputField.onValueChanged.RemoveListener(ClearInput);
+
         }
 
         public void SetText(string text)
@@ -36,15 +31,14 @@ namespace Calculator.Infrastructure
             _inputField.text = text;
         }
 
-
-        private void OnInputFieldSelect(string _)
+        private void ClearInput(string input)
         {
-            _bottomLine.enabled = true;
-        }
-
-        private void OnInputFieldDeselect(string _)
-        {
-            _bottomLine.enabled = false;
+            if (input.Contains("\n") || input.Contains("\r") || input.Contains("\t") || input.Contains("\v"))
+            {
+                var clearedInput = input.Replace("\n", "").Replace("\r", "").Replace("\t", "").Replace("\v", "");
+                _inputField.text = clearedInput;
+                _inputField.caretPosition = _inputField.text.Length;
+            }
         }
 
         private void OnInputFieldValueChanged(string text)

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61f476d3a3d723346af713a2361047c0, type: 3}
+  m_Name: CalculatorSettings
+  m_EditorClassIdentifier: Calculator.Infrastructure::Calculator.Presentation.CalculatorSettings
+  DebounceTime: 500
+  ErrorText: Error
+  ScrollElementPrefab: {fileID: 5195558937440065408, guid: 59dcf0d0f8aa5d0468e905dd87798ef3, type: 3}
+  PopupViewPrefab: {fileID: 4904151942393109870, guid: da1df8df4697e1942bd201e4d294383e, type: 3}
+  InvalidInputPopupMessage: Please check the expression you just entered
+  InvalidInputPopupButton: Got it

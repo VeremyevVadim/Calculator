@@ -1,9 +1,11 @@
 ﻿using Calculator.Presentation;
 using Cysharp.Threading.Tasks;
+using SharedUI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 namespace Calculator.Infrastructure
 {
@@ -19,31 +21,39 @@ namespace Calculator.Infrastructure
         private RectTransform _resultElementsContainer;
 
         [SerializeField]
-        private CalculationResultScrollElementView _prefab;
-
-        [SerializeField]
-        private ErrorPopupView _errorPopupView;
+        private Transform _popupContainer;
 
         [SerializeField]
         private CanvasGroup _calculatorCanvasGroup;
+
+        [SerializeField]
+        private GameObject _historyBottomPaddingSpacer;
 
         public string InputFieldText => _inputField.Text;
 
         public event Action<string> CalculateButtonPressed;
         public event Action<string> InputFieldValueChanged;
 
-        private void Start()
+        private CalculatorSettings _calculatorSettings;
+        private PopupView _popupView;
+        private bool _isSpacerEnabled;
+
+        [Inject]
+        public void Construct(CalculatorSettings settings)
+        {
+            _calculatorSettings = settings;
+        }
+
+        private void Awake()
         {
             _button.onClick.AddListener(OnCalculateButtonPressed);
             _inputField.ValueChanged += OnInputFieldValueChanged;
-            _errorPopupView.CloseButtonClicked += OnCloseButtonClicked;
         }
 
         private void OnDestroy()
         {
             _button.onClick.RemoveListener(OnCalculateButtonPressed);
             _inputField.ValueChanged -= OnInputFieldValueChanged;
-            _errorPopupView.CloseButtonClicked -= OnCloseButtonClicked;
         }
 
         public void Initialize(IEnumerable<string> results, string inputFieldText)
@@ -64,18 +74,24 @@ namespace Calculator.Infrastructure
 
         public void ShowErrorPopup()
         {
-            _errorPopupView.gameObject.SetActive(true);
-        }
+            if (_popupView == null)
+            {
+                _popupView = Instantiate(_calculatorSettings.PopupViewPrefab, _popupContainer);
+            }
 
-        private void OnCloseButtonClicked()
-        {
-            _errorPopupView.gameObject.SetActive(false);
+            _popupView.Show(message: _calculatorSettings.InvalidInputPopupMessage, buttonText: _calculatorSettings.InvalidInputPopupButton);
         }
 
         private void CreateCalculationResultElement(string resultText)
         {
-            var resultElement = Instantiate(_prefab, parent: _resultElementsContainer);
+            var resultElement = Instantiate(_calculatorSettings.ScrollElementPrefab, parent: _resultElementsContainer);
             resultElement.SetText(resultText);
+
+            if (!_isSpacerEnabled)
+            {
+                _historyBottomPaddingSpacer.SetActive(true);
+                _isSpacerEnabled = true;
+            }
         }
 
         private void OnInputFieldValueChanged(string text)
@@ -94,8 +110,7 @@ namespace Calculator.Infrastructure
 
             foreach (var result in history)
             {
-                var item = Instantiate(_prefab, parent: _resultElementsContainer);
-                item.SetText(result);
+                CreateCalculationResultElement(result);
             }
 
             Canvas.ForceUpdateCanvases();

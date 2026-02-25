@@ -17,7 +17,7 @@ namespace Calculator.Presentation
 
         public void Start()
         {
-            var saveData = _calculationModel.LoadSaveData();
+            var saveData = _calculationModel.LoadHistory();
             _view.Initialize(saveData.History, saveData.CurrentInput);
 
             _view.CalculateButtonPressed += OnCalculateButtonPressed;

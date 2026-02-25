@@ -9,7 +9,9 @@
   <Project Path="UniTask.TextMeshPro.csproj" />
   <Project Path="Calculator.Presantation.csproj" />
   <Project Path="Calculator.Domain.csproj" />
+  <Project Path="SharedUI.csproj" />
   <Project Path="UniTask.Editor.csproj" />
   <Project Path="UniTask.DOTween.csproj" />
+  <Project Path="Tests.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
 </Solution>

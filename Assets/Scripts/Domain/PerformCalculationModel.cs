@@ -10,11 +10,11 @@ namespace Calculator.Domain
     {
         public event Action<CalculationResult> CalculationCompleted;
 
-        private const string ErrorMessageText = "Error";
-
         private readonly IEnumerable<ICalculatorOperation> _operations;
         private readonly ICalculatorRepository _repository;
         private readonly IEquationValidator _validator;
+        private readonly ICalculatorSettings _settings;
+
 
         private CancellationTokenSource _saveCts;
         private List<string> _calculatorHistory = new(20);
@@ -22,14 +22,16 @@ namespace Calculator.Domain
         public PerformCalculationModel(
             IEnumerable<ICalculatorOperation> operations,
             ICalculatorRepository repository,
-            IEquationValidator validator)
+            IEquationValidator validator,
+            ICalculatorSettings settings)
         {
             _operations = operations;
             _repository = repository;
             _validator = validator;
+            _settings = settings;
         }
 
-        public SaveData LoadSaveData()
+        public SaveData LoadHistory()
         {
             var saveData = _repository.Load();
 
@@ -44,7 +46,7 @@ namespace Calculator.Domain
 
             if (!isEquationValid)
             {
-                CompleteCalculation(equation, $"{equation}={ErrorMessageText}");
+                CompleteCalculation(equation, $"{equation}={_settings.ErrorResultText}");
                 return;
             }
 
@@ -73,7 +75,7 @@ namespace Calculator.Domain
 
             try
             {
-                await UniTask.Delay(TimeSpan.FromMilliseconds(500), cancellationToken: _saveCts.Token);
+                await UniTask.Delay(TimeSpan.FromMilliseconds(_settings.InputDebounceTimeMs), cancellationToken: _saveCts.Token);
 
                 _repository.Save(currentInput, _calculatorHistory);
             }

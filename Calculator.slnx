@@ -1,0 +1,15 @@
+﻿<Solution>
+  <Project Path="UniTask.csproj" />
+  <Project Path="VContainer.csproj" />
+  <Project Path="UniTask.Linq.csproj" />
+  <Project Path="Calculator.Editor.csproj" />
+  <Project Path="VContainer.Editor.csproj" />
+  <Project Path="UniTask.Addressables.csproj" />
+  <Project Path="Calculator.Infrastructure.csproj" />
+  <Project Path="UniTask.TextMeshPro.csproj" />
+  <Project Path="Calculator.Presantation.csproj" />
+  <Project Path="Calculator.Domain.csproj" />
+  <Project Path="UniTask.Editor.csproj" />
+  <Project Path="UniTask.DOTween.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
+</Solution>

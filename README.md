@@ -16,3 +16,4 @@
 - Для возможности складывать большие числа использовался BigInteger.
 - Tools/Calculator/... для очистки PlayerPrefs.
 - Validator и Calculation покрыты EditMode тестами.
+- DefaultOrientation - Portrait для Android и IOS.

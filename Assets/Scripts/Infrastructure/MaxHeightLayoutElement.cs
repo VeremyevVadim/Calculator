@@ -36,6 +36,8 @@ namespace Calculator.Infrastructure
             {
                 _maxHeightReached = true;
                 _scrollRect.vertical = true;
+                _scrollRect.enabled = false;
+                _scrollRect.enabled = true;
                 Canvas.ForceUpdateCanvases();
             }
         }
